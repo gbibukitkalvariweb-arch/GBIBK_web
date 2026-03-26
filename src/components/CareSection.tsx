@@ -21,7 +21,7 @@ const CareSection = () => {
         <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
           Layanan Jemaat
         </p>
-        <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground">
+        <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase">
           Kami Peduli Dengan Anda
         </h2>
       </motion.div>
@@ -34,9 +34,9 @@ const CareSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.1 }}
-            className="bg-surface rounded-2xl p-8 text-center border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-pointer group"
+            className="bg-card rounded-2xl p-8 text-center border border-border hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-pointer group"
           >
-            <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors">
+            <div className="w-16 h-16 rounded-xl bg-primary/15 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/25 transition-colors">
               <svc.icon className="w-8 h-8 text-primary" />
             </div>
             <h3 className="font-bold text-foreground mb-2">{svc.title}</h3>

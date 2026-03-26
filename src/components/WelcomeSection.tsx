@@ -6,8 +6,8 @@ import community3 from "@/assets/community-3.jpg";
 
 const WelcomeSection = () => {
   return (
-    <section id="welcome" className="section-padding max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section id="welcome" className="section-padding bg-secondary">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         {/* Left */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -15,20 +15,20 @@ const WelcomeSection = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
+          <p className="text-primary-foreground/70 font-semibold text-sm uppercase tracking-widest mb-3">
             Selamat Datang
           </p>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-secondary-foreground leading-tight uppercase">
             Selamat Datang di Rumah
           </h2>
-          <p className="mt-6 text-muted-foreground leading-relaxed text-lg">
+          <p className="mt-6 text-secondary-foreground/80 leading-relaxed text-lg">
             Kami percaya bahwa setiap orang diciptakan untuk hidup dalam komunitas yang penuh kasih. 
             Di GBI Bukit Kalvari, Anda bukan sekadar pengunjung — Anda adalah keluarga. 
             Temukan tujuan hidup Anda dan bertumbuhlah bersama kami.
           </p>
           <a
             href="#"
-            className="mt-8 inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all group"
+            className="mt-8 inline-flex items-center gap-2 text-secondary-foreground font-semibold hover:gap-3 transition-all group"
           >
             Kenal Kami Lebih Dekat
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

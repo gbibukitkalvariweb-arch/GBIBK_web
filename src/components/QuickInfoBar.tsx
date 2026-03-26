@@ -18,7 +18,7 @@ const items = [
 
 const QuickInfoBar = () => {
   return (
-    <section className="bg-surface border-y border-border">
+    <section className="bg-card border-y border-border">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-5 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0">
         {items.map((item, i) => (
           <div key={i} className="flex items-center justify-center gap-3">
