@@ -30,7 +30,7 @@ const NextStepSection = () => {
         <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
           Langkah Selanjutnya
         </p>
-        <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground">
+        <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase">
           Kami Di Sini Untuk Anda
         </h2>
       </motion.div>
@@ -43,9 +43,9 @@ const NextStepSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.15 }}
-            className="glass-card rounded-2xl p-8 md:p-12 flex flex-col items-start gap-6 hover:border-primary/30 transition-colors group"
+            className="glass-card rounded-2xl p-8 md:p-12 flex flex-col items-start gap-6 hover:border-primary/50 transition-colors group"
           >
-            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-xl bg-primary/15 flex items-center justify-center">
               <card.icon className="w-7 h-7 text-primary" />
             </div>
             <div>

@@ -13,7 +13,7 @@ const previousSermons = [
 
 const SermonSection = () => {
   return (
-    <section id="sermon" className="py-16 md:py-24" style={{ backgroundColor: "#000" }}>
+    <section id="sermon" className="py-16 md:py-24 bg-foreground">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -25,7 +25,7 @@ const SermonSection = () => {
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
             Khotbah Terbaru
           </p>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-background uppercase">
             Dengarkan Firman Tuhan
           </h2>
         </motion.div>
@@ -46,8 +46,8 @@ const SermonSection = () => {
             height={720}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
-            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center gold-glow group-hover:scale-110 transition-transform">
+          <div className="absolute inset-0 bg-foreground/30 flex items-center justify-center group-hover:bg-foreground/40 transition-colors">
+            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center accent-glow group-hover:scale-110 transition-transform">
               <Play className="w-8 h-8 text-primary-foreground ml-1" />
             </div>
           </div>
@@ -72,12 +72,12 @@ const SermonSection = () => {
                 height={512}
                 className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 bg-foreground/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Play className="w-10 h-10 text-primary" />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                <p className="text-xs text-muted-foreground">{sermon.date}</p>
-                <p className="text-sm font-semibold text-foreground">{sermon.title}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-foreground/80 to-transparent">
+                <p className="text-xs text-background/60">{sermon.date}</p>
+                <p className="text-sm font-semibold text-background">{sermon.title}</p>
               </div>
             </motion.div>
           ))}
