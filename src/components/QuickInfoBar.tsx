@@ -3,16 +3,16 @@ import { Clock, MapPin, Navigation } from "lucide-react";
 const items = [
   {
     icon: Clock,
-    text: "Ibadah Raya: Minggu | 08:00 & 10:30 WIB",
+    text: "Ibadah Raya: Minggu | 07:00 & 09:00 WIB",
   },
   {
     icon: MapPin,
-    text: "GBI Bukit Kalvari, Depok",
+    text: "Jl. Mandala Utara No. 26, Tomang, Jakarta Barat",
   },
   {
     icon: Navigation,
     text: "Buka di Google Maps",
-    href: "https://maps.google.com",
+    href: "https://www.google.com/maps/dir//Jl.+Mandala+Utara+No.26,+RT.2%2FRW.2,+Tomang,+Kec.+Grogol+petamburan,+Kota+Jakarta+Barat,+Daerah+Khusus+Ibukota+Jakarta+11440/@-6.1739668,106.7942805,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0x2e69f660e578f491:0x2c32baed47f21853!2m2!1d106.7964692!2d-6.1739721!3e0",
   },
 ];
 
