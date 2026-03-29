@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const navLinks = [
-  { label: "Beranda", href: "#" },
-  { label: "Tentang", href: "#welcome" },
-  { label: "Ibadah", href: "#sermon" },
-  { label: "Layanan", href: "#care" },
-  { label: "Renungan", href: "#resources" },
+  { label: "Beranda", to: "/" },
+  { label: "Tentang", to: "/tentang" },
+  { label: "Ibadah", to: "/ibadah" },
+  { label: "Layanan", to: "/layanan" },
+  { label: "Renungan", to: "/renungan" },
+  { label: "Event", to: "/event" }, 
 ];
 
 const Navbar = () => {
@@ -17,24 +18,29 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-lg border-b border-border">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
-        <a href="#" className="font-heading text-lg font-extrabold tracking-tight text-foreground">
-          GBI BUKIT KALVARI
-        </a>
+        
+        <Link to="/" className="flex items-center gap-3">
+          <img 
+            src="/logo-gbi.png" 
+            alt="Logo GBI" 
+            className="h-9 w-auto object-contain"
+          />
+          <span className="font-heading text-lg font-extrabold tracking-tight text-foreground pt-1">
+            GBI BUKIT KALVARI
+          </span>
+        </Link>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
-              href={link.href}
+              to={link.to}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wide"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <Button variant="hero" size="sm">
-            Datang Minggu Ini
-          </Button>
         </div>
 
         {/* Mobile toggle */}
@@ -58,18 +64,15 @@ const Navbar = () => {
           >
             <div className="flex flex-col gap-4 px-4 py-6">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.label}
-                  href={link.href}
+                  to={link.to}
                   onClick={() => setOpen(false)}
                   className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wide"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
-              <Button variant="hero" size="default" className="w-full mt-2">
-                Datang Minggu Ini
-              </Button>
             </div>
           </motion.div>
         )}
