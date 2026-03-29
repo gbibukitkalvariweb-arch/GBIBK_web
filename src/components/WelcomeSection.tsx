@@ -1,73 +1,67 @@
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import community1 from "@/assets/community-1.jpg";
-import community2 from "@/assets/community-2.jpg";
-import community3 from "@/assets/community-3.jpg";
+import { Link } from "react-router-dom";
 
 const WelcomeSection = () => {
   return (
-    <section id="welcome" className="section-padding bg-secondary">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-        {/* Left */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-primary-foreground/70 font-semibold text-sm uppercase tracking-widest mb-3">
-            Selamat Datang
-          </p>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-secondary-foreground leading-tight uppercase">
-            Selamat Datang di Rumah
-          </h2>
-          <p className="mt-6 text-secondary-foreground/80 leading-relaxed text-lg">
-            Kami percaya bahwa setiap orang diciptakan untuk hidup dalam komunitas yang penuh kasih. 
-            Di GBI Bukit Kalvari, Anda bukan sekadar pengunjung — Anda adalah keluarga. 
-            Temukan tujuan hidup Anda dan bertumbuhlah bersama kami.
-          </p>
-          <a
-            href="#"
-            className="mt-8 inline-flex items-center gap-2 text-secondary-foreground font-semibold hover:gap-3 transition-all group"
-          >
-            Kenal Kami Lebih Dekat
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-        </motion.div>
+    <section className="bg-[#8A9A86] py-20 md:py-32 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* ========== KIRI: TEKS WELCOME ========== */}
+          <div className="text-white z-10">
+            <span className="block text-sm md:text-base font-bold tracking-[0.15em] uppercase mb-4 text-white/80">
+              TENTANG GBI BUKIT KALVARI
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-8 uppercase">
+              MENGENAI KAMI
+            </h2>
+            <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium mb-10 max-w-lg lg:pr-6">
+              Berawal dari persekutuan doa sederhana yang dirintis oleh Pdt. Ade Manuhutu, GBI Bukit Kalvari kini bertumbuh dengan satu kerinduan: melihat setiap jiwa mengalami restorasi total. Di sini, Anda bukan sekadar pengunjung. Kami mengundang Anda menjadi bagian dari keluarga rohani yang saling menguatkan, dipulihkan, dan dipersiapkan untuk melayani Kristus.
+            </p>
+            <Link to="/tentang" className="inline-flex items-center gap-2 text-white font-bold text-lg hover:text-white/80 transition-colors group">
+              Kenal Kami Lebih Dekat
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+            </Link>
+          </div>
 
-        {/* Right — overlapping images */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative grid grid-cols-2 gap-4"
-        >
-          <img
-            src={community1}
-            alt="Komunitas gereja"
-            loading="lazy"
-            width={800}
-            height={1024}
-            className="rounded-xl shadow-2xl col-span-1 row-span-2 object-cover h-full"
-          />
-          <img
-            src={community2}
-            alt="Kelompok kecil"
-            loading="lazy"
-            width={800}
-            height={600}
-            className="rounded-xl shadow-xl object-cover"
-          />
-          <img
-            src={community3}
-            alt="Pelayanan komunitas"
-            loading="lazy"
-            width={800}
-            height={600}
-            className="rounded-xl shadow-xl object-cover"
-          />
-        </motion.div>
+          {/* ========== KANAN: 3 FOTO MASONRY (RATA ATAS BAWAH) ========== */}
+          <div className="grid grid-cols-12 gap-4 lg:gap-5 h-[450px] lg:h-[550px] w-full">
+            
+            {/* Foto Kiri: Jatah 5 kolom, Full tinggi */}
+            <div className="col-span-5 h-full rounded-2xl overflow-hidden shadow-xl group">
+              {/* Zoom 1.20: Black bar hilang, tapi penari tetep utuh! */}
+              <img 
+                src="/mandala7.jpeg" 
+                alt="Ibadah Jemaat GBI 1" 
+                className="w-full h-full object-cover object-center scale-[1.20] group-hover:scale-[1.30] transition-transform duration-700"
+              />
+            </div>
+            
+            {/* Foto Kanan: Jatah 7 kolom, Dibagi 2 atas bawah persis */}
+            <div className="col-span-7 h-full flex flex-col gap-4 lg:gap-5">
+              
+              <div className="flex-1 rounded-2xl overflow-hidden shadow-xl group">
+                {/* Zoom 1.25: Black bar musnah dari foto kanan atas */}
+                <img 
+                  src="/mandala8.jpeg" 
+                  alt="Ibadah Jemaat GBI 2" 
+                  className="w-full h-full object-cover object-center scale-[1.25] group-hover:scale-[1.35] transition-transform duration-700"
+                />
+              </div>
+              
+              <div className="flex-1 rounded-2xl overflow-hidden shadow-xl group">
+                {/* Zoom 1.25: Black bar musnah dari foto kanan bawah */}
+                <img 
+                  src="/mandala9.jpeg" 
+                  alt="Ibadah Jemaat GBI 3" 
+                  className="w-full h-full object-cover object-center scale-[1.25] group-hover:scale-[1.35] transition-transform duration-700"
+                />
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
