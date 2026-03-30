@@ -2,7 +2,6 @@ import HeroSection from "../components/HeroSection";
 import WelcomeSection from "../components/WelcomeSection";
 import SermonSection from "../components/SermonSection";
 import ResourcesSection from "../components/ResourcesSection";
-import CareSection from "../components/CareSection";
 
 const Index = () => {
   return (
@@ -21,9 +20,8 @@ const Index = () => {
       
       <ResourcesSection />
       
-      <CareSection />
+      {/* CareSection (Layanan Jemaat) udah resmi kita cabut dari sini bro! Pindah ke halamannya sendiri. */}
 
-      {/* Kalau lo punya Footer di sini, biarin aja dulu atau kalau mau dibersihin sekalian (pindah ke App.tsx), kabarin gw */}
     </main>
   );
 };

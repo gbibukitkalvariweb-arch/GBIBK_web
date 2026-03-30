@@ -1,143 +1,164 @@
-import { PlayCircle, ArrowRight, Calendar, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { client } from '../lib/sanity'; 
+
+const accentColor = "text-[#a57b5f]";
+const accentBg = "bg-[#f4ebe1]";
 
 const SermonSection = () => {
+  const [khotbahList, setKhotbahList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // GROQ Query udah disesuaikan PERSIS dengan nama field di database Sanity lu
+    const query = `*[_type == "khotbah"] | order(tanggal desc)[0...4] {
+      _id,
+      "judul": title,
+      "pembicara": pengkhotbah,
+      tanggal,
+      linkYoutube
+    }`;
+
+    client.fetch(query)
+      .then((data) => {
+        setKhotbahList(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching khotbah:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const getYoutubeThumbnail = (url) => {
+    if (!url) return 'https://via.placeholder.com/640x360?text=No+Video';
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    const videoId = (match && match[2].length === 11) ? match[2] : null;
+    
+    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : 'https://via.placeholder.com/640x360?text=Invalid+URL';
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  const CalendarIcon = () => (
+    <svg className="w-4 h-4 mr-1.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+    </svg>
+  );
+
+  if (loading) {
+    return <div className="py-20 text-center text-gray-500 font-medium animate-pulse">Memuat Khotbah...</div>;
+  }
+
+  const khotbahTerbaru = khotbahList[0];
+  const khotbahLainnya = khotbahList.slice(1);
+
   return (
-    <section className="bg-[#F8F7F4] py-20 md:py-32 border-t border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <div className="bg-white py-16 px-6">
+      <div className="max-w-[1200px] mx-auto">
         
-        {/* ========== HEADER ========== */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        {/* Header Section */}
+        <div className="flex justify-between items-end mb-10 pb-4 border-b border-gray-100">
           <div>
-            <span className="block text-sm md:text-base font-bold tracking-[0.15em] uppercase mb-4 text-[#A47151]">
-              KUMPULAN KHOTBAH
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-[#2A3338] uppercase">
-              PESAN MINGGU INI
-            </h2>
+            <p className={`${accentColor} font-bold text-sm tracking-widest uppercase mb-1.5`}>Kumpulan Khotbah</p>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter">PESAN MINGGU INI</h2>
           </div>
-          
-          <Link to="/khotbah" className="inline-flex items-center text-[#2A3338] font-bold text-base hover:text-[#A47151] transition-colors group">
-            Lihat Semua Khotbah
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          <a href="#" className="hidden md:flex items-center text-gray-900 font-bold hover:text-[#a57b5f] transition-colors text-sm group">
+            Lihat Semua Khotbah 
+            <svg className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
         </div>
 
-        {/* ========== FEATURED & LIST LAYOUT (SAMA KAYAK RESOURCES, TAPI GEDE DI KIRI) ========== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
-          {/* ========== KIRI: FEATURED VIDEO (Jatah 7 Kolom) ========== */}
-          <div className="lg:col-span-7 group cursor-pointer">
-            <div className="overflow-hidden rounded-2xl mb-6 shadow-md aspect-video relative">
-              <img 
-                src="https://images.unsplash.com/photo-1438283173091-5dbf5c5a3206?q=80&w=1200&auto=format&fit=crop" 
-                alt="Khotbah Utama" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              {/* Overlay Gelap & Tombol Play */}
-              <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/40 transition-colors">
-                <PlayCircle className="w-20 h-20 text-white opacity-90 group-hover:scale-110 transition-transform drop-shadow-lg" />
-              </div>
-            </div>
+        {khotbahList.length > 0 ? (
+          <div className="flex flex-col lg:flex-row gap-10">
             
-            <div className="flex items-center gap-4 mb-4">
-              <span className="bg-[#A47151]/10 text-[#A47151] px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                Terbaru
-              </span>
-              <span className="text-gray-400 text-sm font-medium flex items-center gap-1.5">
-                <Calendar className="w-4 h-4" /> 22 Maret 2026
-              </span>
-            </div>
-            
-            <h3 className="text-3xl lg:text-4xl font-black text-[#2A3338] mb-3 group-hover:text-[#A47151] transition-colors leading-tight">
-              Mengalahkan Raksasa Dalam Hidupmu
-            </h3>
-            <p className="text-gray-600 text-lg font-medium">Oleh: Pdt. Ade Manuhutu</p>
-          </div>
-
-          {/* ========== KANAN: LIST VIDEOS (Jatah 5 Kolom) ========== */}
-          <div className="lg:col-span-5 flex flex-col gap-8 lg:pt-2">
-            
-            {/* Item List 1 */}
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-5 group cursor-pointer">
-              <div className="w-full sm:w-40 lg:w-full xl:w-40 h-32 flex-shrink-0 overflow-hidden rounded-xl shadow-sm relative">
+            {/* KIRI: Video Paling Baru */}
+            <div className="lg:w-[60%] cursor-pointer group flex flex-col">
+              <div className="relative rounded-2xl overflow-hidden aspect-[16/9] mb-6 bg-black">
                 <img 
-                  src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Thumbnail 1" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src={getYoutubeThumbnail(khotbahTerbaru?.linkYoutube)} 
+                  alt={khotbahTerbaru?.judul} 
+                  className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
                 />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <PlayCircle className="w-10 h-10 text-white opacity-90" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-white/40 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                     <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-gray-400 text-xs font-medium flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5" /> 45 Menit
-                  </span>
-                  <span className="text-gray-400 text-xs font-medium">15 Maret 2026</span>
-                </div>
-                <h4 className="text-xl font-bold text-[#2A3338] mb-2 group-hover:text-[#A47151] transition-colors line-clamp-2 leading-tight">
-                  Kuasa Doa yang Mengubahkan
-                </h4>
+
+              <div className="flex items-center text-sm font-semibold text-gray-400 mb-3 space-x-4">
+                <span className={`${accentBg} ${accentColor} px-3 py-1 rounded font-bold text-xs uppercase tracking-widest`}>Terbaru</span>
+                <span className="flex items-center">
+                  <CalendarIcon />
+                  {formatDate(khotbahTerbaru?.tanggal)}
+                </span>
               </div>
+
+              <h3 className={`text-4xl md:text-5xl font-extrabold ${accentColor} leading-[1.1] tracking-tighter mb-2`}>
+                {khotbahTerbaru?.judul}
+              </h3>
+              
+              {khotbahTerbaru?.pembicara && (
+                <p className="text-lg font-medium text-gray-500 mt-1">
+                  Oleh: <span className="font-bold text-gray-800">{khotbahTerbaru.pembicara}</span>
+                </p>
+              )}
             </div>
 
-            {/* Item List 2 */}
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-5 group cursor-pointer">
-              <div className="w-full sm:w-40 lg:w-full xl:w-40 h-32 flex-shrink-0 overflow-hidden rounded-xl shadow-sm relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Thumbnail 2" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <PlayCircle className="w-10 h-10 text-white opacity-90" />
-                </div>
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-gray-400 text-xs font-medium flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5" /> 50 Menit
-                  </span>
-                  <span className="text-gray-400 text-xs font-medium">8 Maret 2026</span>
-                </div>
-                <h4 className="text-xl font-bold text-[#2A3338] mb-2 group-hover:text-[#A47151] transition-colors line-clamp-2 leading-tight">
-                  Berjalan Dalam Janji Tuhan
-                </h4>
-              </div>
-            </div>
+            {/* KANAN: 3 Video Sebelumnya */}
+            <div className="lg:w-[40%] flex flex-col space-y-6 pt-1">
+              {khotbahLainnya.map((khotbah, index) => (
+                <div key={khotbah._id || index} className="flex gap-5 items-center cursor-pointer group bg-white hover:bg-gray-50 p-2 rounded-2xl transition-all duration-300">
+                  
+                  <div className="relative w-44 rounded-xl overflow-hidden aspect-video flex-shrink-0 bg-black">
+                    <img 
+                      src={getYoutubeThumbnail(khotbah.linkYoutube)} 
+                      alt={khotbah.judul} 
+                      className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-100"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                       <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/40 shadow-sm">
+                          <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                       </div>
+                    </div>
+                  </div>
 
-            {/* Item List 3 */}
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-5 group cursor-pointer">
-              <div className="w-full sm:w-40 lg:w-full xl:w-40 h-32 flex-shrink-0 overflow-hidden rounded-xl shadow-sm relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Thumbnail 3" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <PlayCircle className="w-10 h-10 text-white opacity-90" />
+                  <div className="flex flex-col pt-1 flex-grow">
+                    <div className="flex items-center text-xs font-semibold text-gray-400 mb-1.5">
+                      <CalendarIcon />
+                      {formatDate(khotbah.tanggal)}
+                    </div>
+
+                    <h4 className="text-xl font-bold text-gray-900 group-hover:text-[#a57b5f] transition-colors leading-snug line-clamp-2 tracking-tight">
+                      {khotbah.judul}
+                    </h4>
+                    
+                    {khotbah.pembicara && (
+                      <p className="text-sm font-medium text-gray-500 mt-1.5 line-clamp-1">
+                        {khotbah.pembicara}
+                      </p>
+                    )}
+                  </div>
+
                 </div>
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-gray-400 text-xs font-medium flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5" /> 42 Menit
-                  </span>
-                  <span className="text-gray-400 text-xs font-medium">1 Maret 2026</span>
-                </div>
-                <h4 className="text-xl font-bold text-[#2A3338] mb-2 group-hover:text-[#A47151] transition-colors line-clamp-2 leading-tight">
-                  Menjadi Terang di Tengah Kegelapan
-                </h4>
-              </div>
+              ))}
             </div>
 
           </div>
-        </div>
+        ) : (
+          <p className="text-gray-500 text-center py-12 bg-gray-50 rounded-2xl font-medium">Belum ada data khotbah. Silakan tambahkan di Sanity Studio.</p>
+        )}
 
       </div>
-    </section>
+    </div>
   );
 };
 

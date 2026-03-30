@@ -4,9 +4,8 @@ import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); // Ini jurus buat ngecek kita lagi di halaman mana
+  const location = useLocation();
 
-  // Daftar menu Navbar biar gampang diatur
   const navLinks = [
     { name: "BERANDA", path: "/" },
     { name: "TENTANG", path: "/tentang" },
@@ -16,9 +15,8 @@ const Navbar = () => {
     { name: "EVENT", path: "/event" },
   ];
 
-  // Fungsi buat ngecek apakah menu ini lagi aktif/dibuka
   const isActive = (path: string) => {
-    if (path === "/" && location.pathname !== "/") return false;
+    if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
   };
 
@@ -29,7 +27,6 @@ const Navbar = () => {
           
           {/* ========== KIRI: LOGO ========== */}
           <Link to="/" className="flex items-center gap-3">
-            {/* Pastiin logo lo bener namanya logo.png atau sesuaikan */}
             <img src="/logo-gbi.png" alt="Logo GBI Bukit Kalvari" className="w-10 h-10 object-contain" />
             <span className="font-black text-xl tracking-tight text-[#2A3338] hidden sm:block">
               GBI BUKIT KALVARI
@@ -44,8 +41,8 @@ const Navbar = () => {
                 to={link.path}
                 className={`text-sm font-bold tracking-wider transition-colors duration-200 ${
                   isActive(link.path)
-                    ? "text-[#A47151]" // Warna cokelat kalau lagi aktif
-                    : "text-gray-500 hover:text-[#A47151]" // Warna abu-abu kalau ngga aktif
+                    ? "text-[#A47151]"
+                    : "text-gray-500 hover:text-[#A47151]"
                 }`}
               >
                 {link.name}
@@ -73,7 +70,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                onClick={() => setIsOpen(false)} // Tutup menu kalau diklik
+                onClick={() => setIsOpen(false)}
                 className={`block text-base font-bold tracking-wider px-2 py-2 rounded-lg ${
                   isActive(link.path)
                     ? "text-[#A47151] bg-[#F4F1ED]"
