@@ -9,5 +9,20 @@ export default defineType({
     defineField({ name: 'pengkhotbah', title: 'Pembicara', type: 'string' }),
     defineField({ name: 'tanggal', title: 'Tanggal', type: 'date' }),
     defineField({ name: 'linkYoutube', title: 'Link YouTube', type: 'url' }),
+    defineField({ 
+      name: 'useYoutubeThumbnail',
+      title: 'Gunakan Thumbnail YouTube?',
+      type: 'boolean',
+      initialValue: true
+    }),
+    defineField({
+      name: 'customThumbnail',
+      title: 'Thumbnail Kustom',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      hidden: ({parent}) => parent?.useYoutubeThumbnail
+    }),
   ],
 })

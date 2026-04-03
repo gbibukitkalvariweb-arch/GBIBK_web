@@ -2,6 +2,7 @@ import HeroSection from "../components/HeroSection";
 import WelcomeSection from "../components/WelcomeSection";
 import SermonSection from "../components/SermonSection";
 import ResourcesSection from "../components/ResourcesSection";
+import MarqueeBanner from "../components/MarqueeBanner";
 
 const Index = () => {
   return (
@@ -11,6 +12,7 @@ const Index = () => {
       */}
       
       <HeroSection />
+      <MarqueeBanner />
       
       {/* NextStepSection udah kita buang kemaren, jadi ngga gw masukin sini lagi ya */}
       

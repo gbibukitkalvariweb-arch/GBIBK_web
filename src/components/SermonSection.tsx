@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { client } from '../lib/sanity'; 
+import { client, urlFor } from '../lib/sanity';
 
 const accentColor = "text-[#a57b5f]";
 const accentBg = "bg-[#f4ebe1]";
@@ -9,18 +9,25 @@ const SermonSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // GROQ Query udah disesuaikan PERSIS dengan nama field di database Sanity lu
     const query = `*[_type == "khotbah"] | order(tanggal desc)[0...4] {
       _id,
       "judul": title,
       "pembicara": pengkhotbah,
       tanggal,
-      linkYoutube
+      linkYoutube,
+      useYoutubeThumbnail,
+      customThumbnail
     }`;
 
     client.fetch(query)
       .then((data) => {
-        setKhotbahList(data);
+        const processedData = data.map(item => ({
+          ...item,
+          thumbnailUrl: item.useYoutubeThumbnail 
+            ? getYoutubeThumbnail(item.linkYoutube)
+            : (item.customThumbnail ? urlFor(item.customThumbnail).width(640).url() : 'https://via.placeholder.com/640x360?text=No+Image')
+        }));
+        setKhotbahList(processedData);
         setLoading(false);
       })
       .catch((err) => {
@@ -64,7 +71,6 @@ const SermonSection = () => {
     <div className="bg-white py-16 px-6">
       <div className="max-w-[1200px] mx-auto">
         
-        {/* Header Section */}
         <div className="flex justify-between items-end mb-10 pb-4 border-b border-gray-100">
           <div>
             <p className={`${accentColor} font-bold text-sm tracking-widest uppercase mb-1.5`}>Kumpulan Khotbah</p>
@@ -79,11 +85,10 @@ const SermonSection = () => {
         {khotbahList.length > 0 ? (
           <div className="flex flex-col lg:flex-row gap-10">
             
-            {/* KIRI: Video Paling Baru */}
-            <div className="lg:w-[60%] cursor-pointer group flex flex-col">
+            <a href={khotbahTerbaru?.linkYoutube} target="_blank" rel="noopener noreferrer" className="lg:w-[60%] group flex flex-col no-underline">
               <div className="relative rounded-2xl overflow-hidden aspect-[16/9] mb-6 bg-black">
                 <img 
-                  src={getYoutubeThumbnail(khotbahTerbaru?.linkYoutube)} 
+                  src={khotbahTerbaru?.thumbnailUrl} 
                   alt={khotbahTerbaru?.judul} 
                   className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
                 />
@@ -111,16 +116,15 @@ const SermonSection = () => {
                   Oleh: <span className="font-bold text-gray-800">{khotbahTerbaru.pembicara}</span>
                 </p>
               )}
-            </div>
+            </a>
 
-            {/* KANAN: 3 Video Sebelumnya */}
             <div className="lg:w-[40%] flex flex-col space-y-6 pt-1">
               {khotbahLainnya.map((khotbah, index) => (
-                <div key={khotbah._id || index} className="flex gap-5 items-center cursor-pointer group bg-white hover:bg-gray-50 p-2 rounded-2xl transition-all duration-300">
+                <a key={khotbah._id || index} href={khotbah.linkYoutube} target="_blank" rel="noopener noreferrer" className="flex gap-5 items-center group bg-white hover:bg-gray-50 p-2 rounded-2xl transition-all duration-300 no-underline">
                   
                   <div className="relative w-44 rounded-xl overflow-hidden aspect-video flex-shrink-0 bg-black">
                     <img 
-                      src={getYoutubeThumbnail(khotbah.linkYoutube)} 
+                      src={khotbah.thumbnailUrl} 
                       alt={khotbah.judul} 
                       className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-100"
                     />
@@ -148,7 +152,7 @@ const SermonSection = () => {
                     )}
                   </div>
 
-                </div>
+                </a>
               ))}
             </div>
 

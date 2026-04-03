@@ -1,135 +1,99 @@
-import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { client, urlFor } from "@/lib/sanity";
 
 const ResourcesSection = () => {
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const query = `*[_type == "renungan"] | order(_createdAt desc) [0...4] {
+      _id,
+      title,
+      "slug": slug.current,
+      mainImage,
+      publishedAt,
+      "category": category->title,
+      "categorySlug": category->slug.current,
+      excerpt
+    }`;
+
+    client.fetch(query)
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch(console.error);
+  }, []);
+
+  if (loading) return <div className="py-20 text-center font-bold text-gray-400 animate-pulse">MEMUAT...</div>;
+
+  const headline = posts[0];
+  const sidePosts = posts.slice(1);
+
   return (
-    <section className="bg-white py-20 md:py-32 border-t border-gray-100">
+    <section className="py-24 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
-        {/* ========== HEADER & TABS BUTTONS ========== */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        {/* HEADER - Samain sama Pesan Minggu Ini */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
           <div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-[#2A3338] uppercase">
-              RENUNGAN & BULETIN
+            <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">Kumpulan Renungan</p>
+            <h2 className="text-4xl md:text-5xl font-black text-[#2A3338] uppercase tracking-tighter leading-none">
+              Renungan & Buletin
             </h2>
           </div>
-          
-          <div className="flex flex-wrap gap-3">
-            <button className="bg-[#A47151] text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-sm">
-              Buletin Rise!
-            </button>
-            <button className="bg-white text-gray-600 px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-gray-50 transition-colors shadow-sm border border-gray-200">
-              Renungan Anak
-            </button>
-            <button className="bg-white text-gray-600 px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-gray-50 transition-colors shadow-sm border border-gray-200">
-              Artikel
-            </button>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/kategori/buletin-rise" className="px-5 py-2 bg-[#A47151] text-white rounded-full font-bold text-[10px] uppercase transition-transform hover:scale-105 active:scale-95">Buletin Rise!</Link>
+            <Link to="/kategori/renungan-anak" className="px-5 py-2 border border-gray-200 rounded-full font-bold text-[10px] uppercase hover:bg-gray-50">Renungan Anak</Link>
+            <Link to="/kategori/artikel" className="px-5 py-2 border border-gray-200 rounded-full font-bold text-[10px] uppercase hover:bg-gray-50">Artikel</Link>
           </div>
         </div>
 
-        {/* ========== FEATURED & LIST LAYOUT (FLIPPED) ========== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
-          {/* ========== KIRI (Desktop): LIST ITEMS (3 Artikel Kecil) ========== */}
-          {/* order-2 di mobile (bawah), order-1 di Desktop (kiri) */}
-          <div className="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1">
-            
-            {/* Item List 1 */}
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-5 group cursor-pointer">
-              <div className="w-full sm:w-40 lg:w-full xl:w-40 h-32 flex-shrink-0 overflow-hidden rounded-xl shadow-sm">
-                <img 
-                  src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Thumbnail 1" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[#A47151] text-xs font-bold uppercase tracking-wider">Renungan Anak</span>
-                  <span className="text-gray-400 text-xs font-medium">22 Maret</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* SISI KIRI (LIST) */}
+          <div className="lg:col-span-5 space-y-8">
+            {sidePosts.map((post) => (
+              <Link key={post._id} to={`/kategori/${post.categorySlug || 'artikel'}`} className="flex gap-6 group">
+                <div className="w-32 h-32 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all group-hover:shadow-lg">
+                  {post.mainImage && (
+                    <img src={urlFor(post.mainImage).url()} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  )}
                 </div>
-                <h4 className="text-xl font-bold text-[#2A3338] mb-2 group-hover:text-[#A47151] transition-colors line-clamp-2 leading-tight">
-                  Iman yang Teguh di Tengah Badai Kehidupan
-                </h4>
-              </div>
-            </div>
-
-            {/* Item List 2 */}
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-5 group cursor-pointer">
-              <div className="w-full sm:w-40 lg:w-full xl:w-40 h-32 flex-shrink-0 overflow-hidden rounded-xl shadow-sm">
-                <img 
-                  src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Thumbnail 2" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[#A47151] text-xs font-bold uppercase tracking-wider">Buletin Rise!</span>
-                  <span className="text-gray-400 text-xs font-medium">15 Maret</span>
+                <div className="flex flex-col justify-center">
+                  <p className="text-[10px] font-black text-[#A47151] uppercase mb-1">
+                    {post.category} — {new Date(post.publishedAt).toLocaleDateString('id-ID')}
+                  </p>
+                  <h3 className="text-xl font-bold text-[#2A3338] leading-tight group-hover:text-[#A47151] transition-colors">
+                    {post.title}
+                  </h3>
                 </div>
-                <h4 className="text-xl font-bold text-[#2A3338] mb-2 group-hover:text-[#A47151] transition-colors line-clamp-2 leading-tight">
-                  Edisi Spesial Paskah: Kasih yang Tidak Bersyarat
-                </h4>
-              </div>
-            </div>
-
-            {/* Item List 3 */}
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-5 group cursor-pointer">
-              <div className="w-full sm:w-40 lg:w-full xl:w-40 h-32 flex-shrink-0 overflow-hidden rounded-xl shadow-sm">
-                <img 
-                  src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Thumbnail 3" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[#A47151] text-xs font-bold uppercase tracking-wider">Artikel</span>
-                  <span className="text-gray-400 text-xs font-medium">8 Maret</span>
-                </div>
-                <h4 className="text-xl font-bold text-[#2A3338] mb-2 group-hover:text-[#A47151] transition-colors line-clamp-2 leading-tight">
-                  Membangun Mezbah Keluarga di Era Digital
-                </h4>
-              </div>
-            </div>
-
+              </Link>
+            ))}
           </div>
 
-          {/* ========== KANAN (Desktop): FEATURED ITEM (1 Artikel Besar) ========== */}
-          {/* order-1 di mobile (atas), order-2 di Desktop (kanan) */}
-          <div className="lg:col-span-7 group cursor-pointer order-1 lg:order-2">
-            <div className="overflow-hidden rounded-2xl mb-6 shadow-md aspect-video">
-              <img 
-                src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=1000&auto=format&fit=crop" 
-                alt="Artikel Utama" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+          {/* SISI KANAN (HEADLINE) */}
+          {headline && (
+            <div className="lg:col-span-7">
+              <Link to={`/kategori/${headline.categorySlug || 'artikel'}`} className="group block">
+                <div className="relative overflow-hidden rounded-3xl bg-gray-100 mb-8 aspect-video shadow-xl transition-all group-hover:shadow-2xl">
+                  {headline.mainImage && (
+                    <img src={urlFor(headline.mainImage).url()} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  )}
+                </div>
+                <p className="text-xs font-black text-[#A47151] uppercase mb-2">
+                  {headline.category} — {new Date(headline.publishedAt).toLocaleDateString('id-ID')}
+                </p>
+                <h3 className="text-3xl md:text-5xl font-black text-[#2A3338] leading-[0.9] tracking-tighter mb-4 group-hover:text-[#A47151] transition-colors">
+                  {headline.title}
+                </h3>
+                <p className="text-gray-500 leading-relaxed text-sm md:text-base">
+                  {headline.excerpt || "Klik untuk membaca selengkapnya..."}
+                </p>
+              </Link>
             </div>
-            
-            <div className="flex items-center gap-4 mb-4">
-              <span className="bg-[#F4F1ED] text-[#A47151] px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                Artikel Terkini
-              </span>
-              <span className="text-gray-400 text-sm font-medium">29 Maret 2026</span>
-            </div>
-            
-            <h3 className="text-3xl lg:text-4xl font-black text-[#2A3338] mb-4 group-hover:text-[#A47151] transition-colors leading-tight">
-              Hidup Dalam Rencana Tuhan di Tengah Ketidakpastian
-            </h3>
-            
-            <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-              Bagaimana kita bisa tetap tenang dan menemukan kedamaian saat dunia di sekitar kita terasa kacau? Temukan langkah-langkah praktis untuk menyelaraskan hidup Anda dengan rencana-Nya.
-            </p>
-            
-            <Link to="/renungan" className="inline-flex items-center text-[#A47151] font-bold text-base hover:text-[#8e6145] transition-colors group/link">
-              Baca selengkapnya
-              <ArrowRight className="w-5 h-5 ml-2 group-hover/link:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
+          )}
         </div>
-
       </div>
     </section>
   );
