@@ -1,4 +1,3 @@
-import PersembahanPage from "./pages/PersembahanPage";
 import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 
@@ -50,7 +49,6 @@ const PersembahanPage = () => {
     <div className="min-h-screen pt-32 pb-20 bg-gray-50">
       <div className="max-w-2xl mx-auto px-4 md:px-8">
 
-        {/* Header */}
         <div className="mb-10 text-center">
           <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">GBI Bukit Kalvari</p>
           <h1 className="text-4xl md:text-5xl font-black text-[#2A3338] uppercase tracking-tighter leading-none mb-4">
@@ -59,21 +57,18 @@ const PersembahanPage = () => {
           <div className="h-2 w-20 bg-[#A47151] mx-auto"></div>
         </div>
 
-        {/* Info */}
         <div className="bg-[#2A3338] rounded-2xl p-6 mb-8 text-center">
           <p className="text-white font-semibold text-base leading-relaxed">
             Persembahan Dapat Ditransfer Ke Nomor Rekening Di Bawah Ini
           </p>
         </div>
 
-        {/* Rekening */}
         <div className="flex flex-col gap-4 mb-8">
           {rekening.map((r) => (
             <RekeningCard key={r.bank} {...r} />
           ))}
         </div>
 
-        {/* Terima kasih */}
         <div className="text-center bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
           <p className="text-[#A47151] font-black text-lg uppercase tracking-wide">
             Terima Kasih Atas Persembahan Anda

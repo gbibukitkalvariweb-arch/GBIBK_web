@@ -2,22 +2,29 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { client, urlFor } from "@/lib/sanity";
 
+const CATEGORY_LABELS: Record<string, string> = {
+  "buletin": "Buletin Rise!",
+  "renungan-anak": "Renungan Anak",
+  "artikel": "Artikel",
+};
+
 const CategoryPage = () => {
   const { slug } = useParams();
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const categoryName = slug?.replace("-", " ").toUpperCase();
+  const categoryName = CATEGORY_LABELS[slug || ""] || slug?.replace(/-/g, " ").toUpperCase();
 
   useEffect(() => {
     setLoading(true);
-    const query = `*[_type == "renungan" && (category->slug.current == $slug || category == $slug)] | order(_createdAt desc) {
+    const query = `*[_type == "renungan" && kategori == $slug] | order(publishedAt desc) {
       _id,
       title,
       "slug": slug.current,
       mainImage,
       publishedAt,
-      "category": category->title
+      kategori,
+      author
     }`;
 
     client.fetch(query, { slug })
@@ -34,16 +41,14 @@ const CategoryPage = () => {
   return (
     <div className="min-h-screen pt-32 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        
-        {/* TOMBOL KEMBALI - Gaya Minimalis & Keren */}
-        <Link 
-          to="/" 
+
+        <Link
+          to="/renungan"
           className="inline-flex items-center gap-2 text-[#A47151] font-black text-xs uppercase tracking-widest mb-10 group hover:gap-4 transition-all"
         >
           <span className="text-xl">←</span> KEMBALI KE RENUNGAN & BULETIN
         </Link>
 
-        {/* JUDUL HALAMAN */}
         <div className="mb-12">
           <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">Kategori Konten</p>
           <h1 className="text-4xl md:text-6xl font-black text-[#2A3338] mb-4 uppercase tracking-tighter leading-none">
@@ -62,8 +67,8 @@ const CategoryPage = () => {
               <div key={post._id} className="group">
                 <div className="overflow-hidden rounded-2xl mb-6 h-72 bg-gray-100 border border-gray-100 shadow-sm transition-all group-hover:shadow-2xl group-hover:-translate-y-2">
                   {post.mainImage ? (
-                    <img 
-                      src={urlFor(post.mainImage).url()} 
+                    <img
+                      src={urlFor(post.mainImage).url()}
                       alt={post.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -71,19 +76,24 @@ const CategoryPage = () => {
                     <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold">NO IMAGE</div>
                   )}
                 </div>
-                <p className="text-[10px] font-black text-[#A47151] uppercase mb-2">
-                   {new Date(post.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </p>
-                <h3 className="text-2xl font-bold text-[#2A3338] leading-tight group-hover:text-[#A47151] transition-colors">
+                {post.publishedAt && (
+                  <p className="text-[10px] font-black text-[#A47151] uppercase mb-2">
+                    {new Date(post.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                )}
+                <h3 className="text-2xl font-bold text-[#2A3338] leading-tight group-hover:text-[#A47151] transition-colors mb-1">
                   {post.title}
                 </h3>
+                {post.author && (
+                  <p className="text-xs text-gray-400">✍️ {post.author}</p>
+                )}
               </div>
             ))}
           </div>
         ) : (
           <div className="bg-gray-50 py-32 rounded-3xl border-2 border-dashed border-gray-200 text-center">
-            <p className="text-gray-400 font-bold text-xl uppercase italic">Belum ada konten untuk kategori "{slug}".</p>
-            <Link to="/" className="mt-6 inline-block text-[#A47151] font-bold underline">Cari di kategori lain</Link>
+            <p className="text-gray-400 font-bold text-xl uppercase italic">Belum ada konten untuk kategori ini.</p>
+            <Link to="/renungan" className="mt-6 inline-block text-[#A47151] font-bold underline">Cari di kategori lain</Link>
           </div>
         )}
       </div>
