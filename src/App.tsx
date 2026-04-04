@@ -1,3 +1,4 @@
+import EventPage from "./pages/EventPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // === IMPORT KOMPONEN UTAMA ===
@@ -22,6 +23,7 @@ const App = () => {
       {/* Area ganti-ganti halaman */}
       <main>
         <Routes>
+        <Route path="/event" element={<EventPage />} />
           <Route path="/" element={<Index />} />
           <Route path="/tentang" element={<TentangPage />} />
           <Route path="/ibadah" element={<IbadahPage />} />
