@@ -1,107 +1,177 @@
-import React from 'react';
-import { ArrowRight, Calendar, User, Tag } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { client, urlFor } from '@/lib/sanity';
+
+const CATEGORIES = [
+  { label: 'Buletin Rise!', slug: 'buletin-rise' },
+  { label: 'Renungan Anak', slug: 'renungan-anak' },
+  { label: 'Artikel', slug: 'artikel' },
+];
 
 const RenunganPage = () => {
-  const renunganLain = [
-    {
-      id: 1,
-      category: "Renungan Anak",
-      date: "22 Mar 2026",
-      title: "Iman yang Teguh di Tengah Badai Kehidupan",
-      image: "https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?q=80&w=1000&auto=format&fit=crop"
-    },
-    {
-      id: 2,
-      category: "Buletin Rise!",
-      date: "15 Mar 2026",
-      title: "Edisi Spesial Paskah: Kasih yang Tidak Bersyarat",
-      image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1000&auto=format&fit=crop"
-    },
-    {
-      id: 3,
-      category: "Artikel",
-      date: "08 Mar 2026",
-      title: "Membangun Mezbah Keluarga di Era Digital",
-      image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1000&auto=format&fit=crop"
-    }
-  ];
+  const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].slug);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [featured, setFeatured] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const query = `*[_type == "renungan" && kategori == $slug] | order(publishedAt desc) {
+      _id,
+      title,
+      "slug": slug.current,
+      mainImage,
+      publishedAt,
+      kategori,
+      author
+    }`;
+
+    client.fetch(query, { slug: activeCategory })
+      .then((data) => {
+        if (data.length > 0) {
+          setFeatured(data[0]);
+          setPosts(data.slice(1));
+        } else {
+          setFeatured(null);
+          setPosts([]);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Sanity Error:', err);
+        setLoading(false);
+      });
+  }, [activeCategory]);
+
+  const getCategoryLabel = (slug: string) => {
+    return CATEGORIES.find((c) => c.slug === slug)?.label || slug;
+  };
 
   return (
     <div className="min-h-screen bg-white pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        
-        {/* HEADER SECTION */}
-        <div className="mb-12 border-b border-gray-100 pb-8 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-black text-[#2A3338] tracking-tighter uppercase mb-4">
-            RENUNGAN & ARTIKEL
+
+        {/* HEADER */}
+        <div className="mb-10">
+          <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">Kumpulan Renungan</p>
+          <h1 className="text-4xl md:text-6xl font-black text-[#2A3338] uppercase tracking-tighter leading-none mb-4">
+            Renungan & Buletin
           </h1>
-          <p className="text-gray-500 text-lg max-w-2xl">
-            Temukan inspirasi dan kekuatan rohani harian untuk pertumbuhan iman Anda dalam Kristus.
-          </p>
+          <div className="h-2 w-20 bg-[#A47151]"></div>
         </div>
 
-        {/* FEATURED ARTICLE (ARTIKEL UTAMA) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20 group cursor-pointer">
-          <div className="lg:col-span-7 overflow-hidden rounded-3xl shadow-xl aspect-video md:aspect-auto md:h-[450px]">
-            <img 
-              src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=1000&auto=format&fit=crop" 
-              alt="Featured" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          </div>
-          <div className="lg:col-span-5 flex flex-col justify-center">
-            <div className="flex items-center gap-4 mb-4">
-              <span className="bg-[#F4F1ED] text-[#A47151] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
-                Artikel Terkini
-              </span>
-              <div className="flex items-center text-gray-400 text-sm">
-                <Calendar className="w-4 h-4 mr-2" />
-                29 Maret 2026
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black text-[#2A3338] mb-6 group-hover:text-[#A47151] transition-colors leading-tight">
-              Hidup Dalam Rencana Tuhan di Tengah Ketidakpastian
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              Bagaimana kita bisa tetap tenang dan menemukan kedamaian saat dunia di sekitar kita terasa kacau? Temukan langkah-langkah praktis untuk menyelaraskan hidup Anda dengan rencana-Nya melalui perenungan firman Tuhan yang mendalam.
-            </p>
-            <button className="bg-[#2A3338] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#A47151] transition-all flex items-center justify-center md:justify-start w-fit group/btn">
-              Baca Renungan Penuh
-              <ArrowRight className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+        {/* FILTER TABS */}
+        <div className="flex gap-3 mb-12 flex-wrap">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.slug}
+              onClick={() => setActiveCategory(cat.slug)}
+              className={`px-5 py-2 rounded-full text-sm font-bold transition-all border ${
+                activeCategory === cat.slug
+                  ? 'bg-[#A47151] text-white border-[#A47151]'
+                  : 'bg-white text-[#2A3338] border-gray-200 hover:border-[#A47151] hover:text-[#A47151]'
+              }`}
+            >
+              {cat.label}
             </button>
-          </div>
+          ))}
         </div>
 
-        {/* SECTION: RENUNGAN LAINNYA */}
-        <div>
-          <div className="flex items-center justify-between mb-10">
-            <h3 className="text-2xl font-black text-[#2A3338] uppercase tracking-tight">Arsip Renungan</h3>
-            <div className="h-px bg-gray-100 flex-grow ml-8 hidden md:block"></div>
+        {loading ? (
+          <div className="flex justify-center py-32 animate-pulse font-bold text-gray-400 uppercase tracking-widest text-xs">
+            Sedang Memuat...
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {renunganLain.map((item) => (
-              <div key={item.id} className="group cursor-pointer">
-                <div className="overflow-hidden rounded-2xl mb-6 shadow-md aspect-[4/3]">
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+        ) : !featured && posts.length === 0 ? (
+          <div className="bg-gray-50 py-32 rounded-3xl border-2 border-dashed border-gray-200 text-center">
+            <p className="text-gray-400 font-bold text-xl uppercase italic">Belum ada konten.</p>
+          </div>
+        ) : (
+          <>
+            {/* FEATURED */}
+            {featured && (
+              <div
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 group cursor-pointer"
+                onClick={() => navigate(`/kategori/${activeCategory}`)}
+              >
+                <div className="lg:col-span-7 overflow-hidden rounded-3xl shadow-xl aspect-video md:h-[420px]">
+                  {featured.mainImage ? (
+                    <img
+                      src={urlFor(featured.mainImage).url()}
+                      alt={featured.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300 font-bold">NO IMAGE</div>
+                  )}
                 </div>
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-[#A47151] text-xs font-bold uppercase tracking-wider">{item.category}</span>
-                  <span className="text-gray-300">•</span>
-                  <span className="text-gray-400 text-xs">{item.date}</span>
+                <div className="lg:col-span-5 flex flex-col justify-center">
+                  <div className="flex flex-wrap items-center gap-3 mb-4">
+                    <span className="bg-[#F4F1ED] text-[#A47151] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+                      {getCategoryLabel(activeCategory)}
+                    </span>
+                    {featured.publishedAt && (
+                      <span className="text-gray-400 text-sm">
+                        {new Date(featured.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="text-2xl md:text-4xl font-black text-[#2A3338] mb-3 group-hover:text-[#A47151] transition-colors leading-tight">
+                    {featured.title}
+                  </h2>
+                  {featured.author && (
+                    <p className="text-sm text-gray-400 mb-6">✍️ {featured.author}</p>
+                  )}
+                  <span className="text-[#A47151] font-bold text-sm group-hover:underline">
+                    Klik untuk membaca selengkapnya →
+                  </span>
                 </div>
-                <h4 className="text-xl font-bold text-[#2A3338] group-hover:text-[#A47151] transition-colors leading-tight line-clamp-2">
-                  {item.title}
-                </h4>
               </div>
-            ))}
-          </div>
-        </div>
+            )}
 
+            {/* POSTS GRID */}
+            {posts.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {posts.map((post) => (
+                  <div
+                    key={post._id}
+                    className="group cursor-pointer"
+                    onClick={() => navigate(`/kategori/${activeCategory}`)}
+                  >
+                    <div className="overflow-hidden rounded-2xl mb-4 shadow-sm aspect-[4/3] bg-gray-100">
+                      {post.mainImage ? (
+                        <img
+                          src={urlFor(post.mainImage).url()}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold text-xs">NO IMAGE</div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <span className="text-[#A47151] text-xs font-bold uppercase tracking-wider">
+                        {getCategoryLabel(activeCategory)}
+                      </span>
+                      <span className="text-gray-300">•</span>
+                      {post.publishedAt && (
+                        <span className="text-gray-400 text-xs">
+                          {new Date(post.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="text-lg font-bold text-[#2A3338] group-hover:text-[#A47151] transition-colors leading-tight line-clamp-2 mb-1">
+                      {post.title}
+                    </h4>
+                    {post.author && (
+                      <p className="text-xs text-gray-400">✍️ {post.author}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
