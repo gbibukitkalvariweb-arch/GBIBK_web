@@ -12,7 +12,7 @@ const EventPage = () => {
       eventDate,
       location,
       description,
-      mainImage
+      image
     }`;
 
     client.fetch(query)
@@ -45,10 +45,10 @@ const EventPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {events.map((event) => (
               <div key={event._id} className="group border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all">
-                {event.mainImage && (
+                {event.image && (
                   <div className="h-56 overflow-hidden">
                     <img
-                      src={urlFor(event.mainImage).url()}
+                      src={urlFor(event.image).url()}
                       alt={event.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
@@ -61,6 +61,9 @@ const EventPage = () => {
                   <h3 className="text-xl font-bold text-[#2A3338] mb-2">{event.title}</h3>
                   {event.location && (
                     <p className="text-sm text-gray-500">📍 {event.location}</p>
+                  )}
+                  {event.description && (
+                    <p className="text-sm text-gray-400 mt-2 line-clamp-3">{event.description}</p>
                   )}
                 </div>
               </div>
