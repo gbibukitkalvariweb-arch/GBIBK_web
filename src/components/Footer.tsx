@@ -1,10 +1,45 @@
-import { Instagram, Facebook, Wallet, Phone } from "lucide-react";
+import { Instagram, Facebook, Wallet, Phone, Download } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setIsInstalled(true);
+    }
+    setIsMobile(/Android|iPhone|iPad/.test(navigator.userAgent));
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      setDeferredPrompt(null);
+    } else {
+      const isSamsung = /SamsungBrowser/.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad/.test(navigator.userAgent);
+      if (isIOS) {
+        alert("Di Safari: Tap tombol Share lalu Add to Home Screen");
+      } else if (isSamsung) {
+        alert("Tap menu titik 3 lalu Add page to lalu Home screen");
+      } else {
+        alert("Tap menu titik 3 lalu Add to Home screen");
+      }
+    }
+  };
+
   return (
     <footer className="bg-foreground">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* Left */}
         <div>
           <h3 className="font-heading text-lg font-extrabold text-primary tracking-tight mb-4">
             GBI BUKIT KALVARI
@@ -23,7 +58,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Middle */}
         <div>
           <h4 className="font-heading text-sm font-bold text-background mb-4 uppercase tracking-widest">
             Menu
@@ -35,7 +69,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Right */}
         <div>
           <h4 className="font-heading text-sm font-bold text-background mb-4 uppercase tracking-widest">
             Ikuti Kami
@@ -48,16 +81,26 @@ const Footer = () => {
               <Facebook className="w-5 h-5" />
             </a>
           </div>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-primary/80 transition-colors"
-          >
-            <Wallet className="w-4 h-4" />
-            Beri Persembahan
-          </a>
+          <div className="flex flex-col gap-3">
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-primary/80 transition-colors"
+            >
+              <Wallet className="w-4 h-4" />
+              Beri Persembahan
+            </a>
+            {isMobile && !isInstalled && (
+              <button
+                onClick={handleInstall}
+                className="inline-flex items-center gap-2 bg-background/10 text-background px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-background/20 transition-colors border border-background/20"
+              >
+                <Download className="w-4 h-4" />
+                Install Aplikasi
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
       <div className="border-t border-background/10 text-center py-6 text-xs text-background/40">
         © 2026 GBI Bukit Kalvari. All rights reserved.
       </div>
