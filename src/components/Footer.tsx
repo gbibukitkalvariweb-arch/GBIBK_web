@@ -1,5 +1,6 @@
 import { Instagram, Facebook, Wallet, Phone, Download } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -82,13 +83,13 @@ const Footer = () => {
             </a>
           </div>
           <div className="flex flex-col gap-3">
-            <a
-              href="#"
+            <Link
+              to="/persembahan"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-primary/80 transition-colors"
             >
               <Wallet className="w-4 h-4" />
               Beri Persembahan
-            </a>
+            </Link>
             {isMobile && !isInstalled && (
               <button
                 onClick={handleInstall}
