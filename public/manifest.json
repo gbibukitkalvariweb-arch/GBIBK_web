@@ -1,0 +1,22 @@
+{
+  "name": "GBI Bukit Kalvari",
+  "short_name": "GBIBK",
+  "description": "Keluarga yang Dipulihkan, Untuk Melayani",
+  "theme_color": "#2A3338",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
