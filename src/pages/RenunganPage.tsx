@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { client, urlFor } from '@/lib/sanity';
 
 const CATEGORIES = [
-  { label: 'Buletin Rise!', slug: 'rise-monthly-update' },
+  { label: 'Buletin Rise!', slug: 'buletin' },
   { label: 'Renungan Anak', slug: 'renungan-anak' },
-  { label: 'Artikel', slug: 'artikel-rohani' },
+  { label: 'Artikel Rohani', slug: 'artikel-rohani' },
 ];
 
 const RenunganPage = () => {
@@ -31,7 +31,7 @@ const RenunganPage = () => {
       .then((data) => {
         if (data.length > 0) {
           setFeatured(data[0]);
-          setPosts(data.slice(1, 9)); // max 8 artikel di grid
+          setPosts(data.slice(1, 9));
         } else {
           setFeatured(null);
           setPosts([]);
@@ -52,7 +52,6 @@ const RenunganPage = () => {
     <div className="min-h-screen bg-white pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
 
-        {/* HEADER */}
         <div className="mb-10">
           <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">Kumpulan Renungan</p>
           <h1 className="text-4xl md:text-6xl font-black text-[#2A3338] uppercase tracking-tighter leading-none mb-4">
@@ -61,7 +60,6 @@ const RenunganPage = () => {
           <div className="h-2 w-20 bg-[#A47151]"></div>
         </div>
 
-        {/* FILTER TABS */}
         <div className="flex gap-3 mb-12 flex-wrap">
           {CATEGORIES.map((cat) => (
             <button
@@ -88,13 +86,12 @@ const RenunganPage = () => {
           </div>
         ) : (
           <>
-            {/* FEATURED - gambar kiri, teks kanan */}
             {featured && (
               <div
                 className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 group cursor-pointer"
-                onClick={() => navigate(`/kategori/${activeCategory}`)}
+                onClick={() => navigate(`/renungan/${featured.slug}`)}
               >
-                <div className="overflow-hidden rounded-3xl shadow-xl aspect-video lg:aspect-auto lg:h-[400px]">
+                <div className="overflow-hidden rounded-3xl shadow-xl aspect-video lg:h-[400px]">
                   {featured.mainImage ? (
                     <img
                       src={urlFor(featured.mainImage).url()}
@@ -129,7 +126,6 @@ const RenunganPage = () => {
               </div>
             )}
 
-            {/* GRID 4 KOLOM MAX 8 ARTIKEL */}
             {posts.length > 0 && (
               <>
                 <div className="h-px bg-gray-100 mb-10"></div>
@@ -138,7 +134,7 @@ const RenunganPage = () => {
                     <div
                       key={post._id}
                       className="group cursor-pointer"
-                      onClick={() => navigate(`/kategori/${activeCategory}`)}
+                      onClick={() => navigate(`/renungan/${post.slug}`)}
                     >
                       <div className="overflow-hidden rounded-xl mb-3 aspect-square bg-gray-100 shadow-sm group-hover:shadow-lg transition-all group-hover:-translate-y-1">
                         {post.mainImage ? (

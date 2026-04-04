@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { client, urlFor } from "@/lib/sanity";
 
 const CATEGORY_LABELS: Record<string, string> = {
   "buletin": "Buletin Rise!",
   "renungan-anak": "Renungan Anak",
-  "artikel": "Artikel",
+  "artikel-rohani": "Artikel Rohani",
 };
 
 const CategoryPage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,13 +43,15 @@ const CategoryPage = () => {
     <div className="min-h-screen pt-32 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
 
-        <Link
-          to="/renungan"
-          className="inline-flex items-center gap-2 text-[#A47151] font-black text-xs uppercase tracking-widest mb-10 group hover:gap-4 transition-all"
+        {/* Tombol kembali ke halaman renungan */}
+        <button
+          onClick={() => navigate("/renungan")}
+          className="inline-flex items-center gap-2 text-[#A47151] font-black text-xs uppercase tracking-widest mb-10 hover:gap-4 transition-all"
         >
-          <span className="text-xl">←</span> KEMBALI KE RENUNGAN & BULETIN
-        </Link>
+          <span className="text-xl">←</span> Kembali ke Renungan & Buletin
+        </button>
 
+        {/* Judul halaman */}
         <div className="mb-12">
           <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">Kategori Konten</p>
           <h1 className="text-4xl md:text-6xl font-black text-[#2A3338] mb-4 uppercase tracking-tighter leading-none">
@@ -64,7 +67,11 @@ const CategoryPage = () => {
         ) : posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {posts.map((post) => (
-              <div key={post._id} className="group">
+              <div
+                key={post._id}
+                className="group cursor-pointer"
+                onClick={() => navigate(`/renungan/${post.slug}`)}
+              >
                 <div className="overflow-hidden rounded-2xl mb-6 h-72 bg-gray-100 border border-gray-100 shadow-sm transition-all group-hover:shadow-2xl group-hover:-translate-y-2">
                   {post.mainImage ? (
                     <img
@@ -93,7 +100,12 @@ const CategoryPage = () => {
         ) : (
           <div className="bg-gray-50 py-32 rounded-3xl border-2 border-dashed border-gray-200 text-center">
             <p className="text-gray-400 font-bold text-xl uppercase italic">Belum ada konten untuk kategori ini.</p>
-            <Link to="/renungan" className="mt-6 inline-block text-[#A47151] font-bold underline">Cari di kategori lain</Link>
+            <button
+              onClick={() => navigate("/renungan")}
+              className="mt-6 inline-block text-[#A47151] font-bold underline"
+            >
+              Cari di kategori lain
+            </button>
           </div>
         )}
       </div>

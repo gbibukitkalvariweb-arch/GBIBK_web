@@ -10,6 +10,7 @@ import IbadahPage from "./pages/IbadahPage";
 import LayananJemaatPage from "./pages/LayananJemaatPage"; 
 import RenunganPage from "./pages/RenunganPage";
 import CategoryPage from "./pages/CategoryPage";
+import RenunganDetailPage from "./pages/RenunganDetailPage";
 import EventPage from "./pages/EventPage";
 import PersembahanPage from "./pages/PersembahanPage";
 
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/persembahan" element={<PersembahanPage />} />
           <Route path="/kategori/:slug" element={<CategoryPage />} /> 
           <Route path="/renungan" element={<RenunganPage />} /> 
+          <Route path="/renungan/:slug" element={<RenunganDetailPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
