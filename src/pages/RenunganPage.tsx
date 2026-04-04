@@ -17,7 +17,7 @@ const RenunganPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    const query = `*[_type == "renungan" && kategori == $slug] | order(publishedAt desc) {
+    const query = `*[_type == "renungan" && kategori == $slug] | order(publishedAt desc) [0...9] {
       _id,
       title,
       "slug": slug.current,
@@ -31,7 +31,7 @@ const RenunganPage = () => {
       .then((data) => {
         if (data.length > 0) {
           setFeatured(data[0]);
-          setPosts(data.slice(1));
+          setPosts(data.slice(1, 9)); // max 8 artikel di grid
         } else {
           setFeatured(null);
           setPosts([]);
@@ -88,13 +88,13 @@ const RenunganPage = () => {
           </div>
         ) : (
           <>
-            {/* FEATURED */}
+            {/* FEATURED - gambar kiri, teks kanan */}
             {featured && (
               <div
-                className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 group cursor-pointer"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 group cursor-pointer"
                 onClick={() => navigate(`/kategori/${activeCategory}`)}
               >
-                <div className="lg:col-span-7 overflow-hidden rounded-3xl shadow-xl aspect-video md:h-[420px]">
+                <div className="overflow-hidden rounded-3xl shadow-xl aspect-video lg:aspect-auto lg:h-[400px]">
                   {featured.mainImage ? (
                     <img
                       src={urlFor(featured.mainImage).url()}
@@ -105,7 +105,7 @@ const RenunganPage = () => {
                     <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300 font-bold">NO IMAGE</div>
                   )}
                 </div>
-                <div className="lg:col-span-5 flex flex-col justify-center">
+                <div className="flex flex-col justify-center pl-0 lg:pl-6">
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     <span className="bg-[#F4F1ED] text-[#A47151] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
                       {getCategoryLabel(activeCategory)}
@@ -129,46 +129,43 @@ const RenunganPage = () => {
               </div>
             )}
 
-            {/* POSTS GRID */}
+            {/* GRID 4 KOLOM MAX 8 ARTIKEL */}
             {posts.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {posts.map((post) => (
-                  <div
-                    key={post._id}
-                    className="group cursor-pointer"
-                    onClick={() => navigate(`/kategori/${activeCategory}`)}
-                  >
-                    <div className="overflow-hidden rounded-2xl mb-4 shadow-sm aspect-[4/3] bg-gray-100">
-                      {post.mainImage ? (
-                        <img
-                          src={urlFor(post.mainImage).url()}
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold text-xs">NO IMAGE</div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="text-[#A47151] text-xs font-bold uppercase tracking-wider">
-                        {getCategoryLabel(activeCategory)}
-                      </span>
-                      <span className="text-gray-300">•</span>
+              <>
+                <div className="h-px bg-gray-100 mb-10"></div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {posts.map((post) => (
+                    <div
+                      key={post._id}
+                      className="group cursor-pointer"
+                      onClick={() => navigate(`/kategori/${activeCategory}`)}
+                    >
+                      <div className="overflow-hidden rounded-xl mb-3 aspect-square bg-gray-100 shadow-sm group-hover:shadow-lg transition-all group-hover:-translate-y-1">
+                        {post.mainImage ? (
+                          <img
+                            src={urlFor(post.mainImage).url()}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold text-xs">NO IMAGE</div>
+                        )}
+                      </div>
                       {post.publishedAt && (
-                        <span className="text-gray-400 text-xs">
-                          {new Date(post.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                        </span>
+                        <p className="text-[10px] text-gray-400 mb-1">
+                          {new Date(post.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </p>
+                      )}
+                      <h4 className="text-sm font-bold text-[#2A3338] group-hover:text-[#A47151] transition-colors leading-tight line-clamp-2">
+                        {post.title}
+                      </h4>
+                      {post.author && (
+                        <p className="text-[10px] text-gray-400 mt-1">✍️ {post.author}</p>
                       )}
                     </div>
-                    <h4 className="text-lg font-bold text-[#2A3338] group-hover:text-[#A47151] transition-colors leading-tight line-clamp-2 mb-1">
-                      {post.title}
-                    </h4>
-                    {post.author && (
-                      <p className="text-xs text-gray-400">✍️ {post.author}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </>
             )}
           </>
         )}
