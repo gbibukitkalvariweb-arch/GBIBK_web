@@ -5,7 +5,7 @@ import { client, urlFor } from '@/lib/sanity';
 const CATEGORIES = [
   { label: 'Buletin Rise!', slug: 'buletin' },
   { label: 'Renungan Anak', slug: 'renungan-anak' },
-  { label: 'Artikel', slug: 'artikel' },
+  { label: 'Artikel', slug: 'artikel-rohani' },
 ];
 
 const RenunganPage = () => {
