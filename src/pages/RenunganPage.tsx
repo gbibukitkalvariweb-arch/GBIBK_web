@@ -52,6 +52,7 @@ const RenunganPage = () => {
     <div className="min-h-screen bg-white pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
 
+        {/* HEADER */}
         <div className="mb-10">
           <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">Kumpulan Renungan</p>
           <h1 className="text-4xl md:text-6xl font-black text-[#2A3338] uppercase tracking-tighter leading-none mb-4">
@@ -60,6 +61,7 @@ const RenunganPage = () => {
           <div className="h-2 w-20 bg-[#A47151]"></div>
         </div>
 
+        {/* FILTER TABS */}
         <div className="flex gap-3 mb-12 flex-wrap">
           {CATEGORIES.map((cat) => (
             <button
@@ -86,12 +88,14 @@ const RenunganPage = () => {
           </div>
         ) : (
           <>
+            {/* FEATURED - flex bukan grid biar lebih stabil */}
             {featured && (
               <div
-                className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 group cursor-pointer"
+                className="flex flex-col lg:flex-row gap-8 mb-16 cursor-pointer group"
                 onClick={() => navigate(`/renungan/${featured.slug}`)}
               >
-                <div className="overflow-hidden rounded-3xl shadow-xl aspect-video lg:h-[400px]">
+                {/* Gambar kiri */}
+                <div className="w-full lg:w-1/2 flex-shrink-0 overflow-hidden rounded-3xl shadow-xl aspect-video lg:aspect-auto lg:h-[400px]">
                   {featured.mainImage ? (
                     <img
                       src={urlFor(featured.mainImage).url()}
@@ -99,17 +103,23 @@ const RenunganPage = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300 font-bold">NO IMAGE</div>
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300 font-bold">
+                      NO IMAGE
+                    </div>
                   )}
                 </div>
-                <div className="flex flex-col justify-center pl-0 lg:pl-6">
+
+                {/* Teks kanan */}
+                <div className="w-full lg:w-1/2 flex flex-col justify-center">
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     <span className="bg-[#F4F1ED] text-[#A47151] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
                       {getCategoryLabel(activeCategory)}
                     </span>
                     {featured.publishedAt && (
                       <span className="text-gray-400 text-sm">
-                        {new Date(featured.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        {new Date(featured.publishedAt).toLocaleDateString('id-ID', {
+                          day: 'numeric', month: 'long', year: 'numeric'
+                        })}
                       </span>
                     )}
                   </div>
@@ -126,6 +136,7 @@ const RenunganPage = () => {
               </div>
             )}
 
+            {/* GRID 4 KOLOM MAX 8 */}
             {posts.length > 0 && (
               <>
                 <div className="h-px bg-gray-100 mb-10"></div>
@@ -144,12 +155,16 @@ const RenunganPage = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold text-xs">NO IMAGE</div>
+                          <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold text-xs">
+                            NO IMAGE
+                          </div>
                         )}
                       </div>
                       {post.publishedAt && (
                         <p className="text-[10px] text-gray-400 mb-1">
-                          {new Date(post.publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          {new Date(post.publishedAt).toLocaleDateString('id-ID', {
+                            day: 'numeric', month: 'short', year: 'numeric'
+                          })}
                         </p>
                       )}
                       <h4 className="text-sm font-bold text-[#2A3338] group-hover:text-[#A47151] transition-colors leading-tight line-clamp-2">
