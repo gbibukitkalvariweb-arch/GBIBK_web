@@ -64,9 +64,21 @@ const Footer = () => {
             Menu
           </h4>
           <ul className="flex flex-col gap-3 text-sm text-background/60">
-            <li><a href="#" className="hover:text-background transition-colors">Jadwal Ibadah</a></li>
-            <li><a href="#resources" className="hover:text-background transition-colors">Renungan</a></li>
-            <li><a href="#care" className="hover:text-background transition-colors">Layanan Jemaat</a></li>
+            <li>
+              <Link to="/ibadah" className="hover:text-background transition-colors">
+                Jadwal Ibadah
+              </Link>
+            </li>
+            <li>
+              <Link to="/renungan" className="hover:text-background transition-colors">
+                Renungan
+              </Link>
+            </li>
+            <li>
+              <Link to="/layanan" className="hover:text-background transition-colors">
+                Layanan Jemaat
+              </Link>
+            </li>
           </ul>
         </div>
 
