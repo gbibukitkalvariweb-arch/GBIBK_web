@@ -98,16 +98,27 @@ const IbadahPage = () => {
               </div>
             </div>
 
-            <a href="https://maps.google.com/?q=GBI+Bukit+Kalvari+Tomang" target="_blank" rel="noreferrer" className={`mt-8 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg text-white bg-[#a57b5f] hover:bg-[#8a654c] transition-colors w-fit`}>
+            <a
+              href="https://maps.google.com/?q=Jl.+Mandala+Utara+No.26+Tomang+Jakarta+Barat"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg text-white bg-[#a57b5f] hover:bg-[#8a654c] transition-colors w-fit"
+            >
               Buka di Google Maps
             </a>
           </div>
           
-          <div className="md:w-1/2 bg-gray-200 min-h-[300px]">
-            <img 
-              src="https://images.unsplash.com/photo-1548625361-ec8531eb3bde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-              alt="Lokasi Gereja" 
-              className="w-full h-full object-cover"
+          {/* Google Maps Embed */}
+          <div className="md:w-1/2 min-h-[350px]">
+            <iframe
+              title="Lokasi GBI Bukit Kalvari"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.4!2d106.7947!3d-6.1731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f70a5b5b5b5b%3A0x0!2sJl.+Mandala+Utara+No.26%2C+Tomang%2C+Jakarta+Barat!5e0!3m2!1sid!2sid!4v1617000000000!5m2!1sid!2sid"
+              width="100%"
+              height="100%"
+              style={{ border: 0, minHeight: '350px' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
         </div>
