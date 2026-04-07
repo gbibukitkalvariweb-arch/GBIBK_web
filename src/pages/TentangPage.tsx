@@ -73,7 +73,6 @@ const TentangPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Visi */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
               <h3 className="text-xs font-black text-[#A47151] uppercase tracking-widest mb-4">Visi</h3>
               <p className="text-white text-lg leading-relaxed mb-3">
@@ -82,7 +81,6 @@ const TentangPage = () => {
               <p className="text-[#A47151] font-bold italic text-sm">(Kisah Para Rasul 3:21)</p>
             </div>
 
-            {/* Misi */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
               <h3 className="text-xs font-black text-[#A47151] uppercase tracking-widest mb-4">Misi</h3>
               <p className="text-white text-lg leading-relaxed">
@@ -96,6 +94,7 @@ const TentangPage = () => {
       {/* ===== PROFIL GEMBALA ===== */}
       <div className="bg-white py-16 md:py-24 border-t border-gray-100">
         <div className="max-w-4xl mx-auto px-6">
+
           <div className="mb-12">
             <p className="text-[10px] font-black text-[#A47151] uppercase tracking-[0.2em] mb-2">GBI Bukit Kalvari</p>
             <h2 className="text-4xl md:text-5xl font-black text-[#2A3338] uppercase tracking-tighter leading-none mb-4">
@@ -105,37 +104,53 @@ const TentangPage = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-12 items-start">
+
             {/* Teks kiri */}
             <div className="flex-1 order-2 md:order-1">
               <h3 className="text-2xl md:text-3xl font-black text-[#2A3338] mb-1">
-                Pdt. [Nama Gembala]
+                Pdt. Riwu Agustinus Huru
               </h3>
               <p className="text-[#A47151] font-bold text-sm uppercase tracking-widest mb-6">
-                Gembala Sidang GBI Bukit Kalvari
+                Gembala Jemaat GBI Bukit Kalvari (Mandala Utara)
               </p>
-              <div className="space-y-4 text-gray-600 leading-relaxed">
+
+              <div className="space-y-5 text-gray-600 leading-relaxed text-base">
                 <p>
-                  [Isi biografi singkat gembala di sini. Ceritakan latar belakang pelayanan, pendidikan teologi, dan visi pelayanan beliau.]
+                  Lahir di Atambua, NTT, Indonesia, pada tanggal <span className="font-semibold text-gray-800">20 Agustus 1970</span> dan memulai pelayanannya pada tahun <span className="font-semibold text-gray-800">1995</span> di kota Kupang, NTT, bersama dengan Youth Full Gospel sebagai Pelayan Konseling dan Pelepasan.
                 </p>
                 <p>
-                  [Paragraf kedua bisa berisi pengalaman pelayanan, tahun mulai melayani, atau hal-hal yang relevan tentang gembala.]
+                  Pada tahun <span className="font-semibold text-gray-800">2000</span> dengan kerinduan untuk semakin dilengkapi bagi pelayanan, Pdt. Riwu berangkat ke Jakarta. Berdasarkan arahan Pdt. Ade Manuhutu, Pdt. Riwu bergabung dengan IPG (Institut Pertumbuhan Gereja) yang diadakan oleh GBI Mawar Saron dan mendapatkan pelatihan selama 6 bulan. Setelah menyelesaikan pelatihan tersebut, Pdt. Riwu dikirim oleh Pdt. Ade Manuhutu untuk melayani di pedalaman Riau di suku Talang Mamak selama 6 bulan.
                 </p>
                 <p>
-                  [Paragraf ketiga bisa berisi kutipan atau semboyan pelayanan gembala.]
+                  Sekembalinya ke Jakarta, Pdt. Riwu masuk dalam pelayanan sepenuhnya bersama GBI Bukit Kalvari hingga pada tanggal <span className="font-semibold text-gray-800">24 Maret 2002</span>, Pdt. Agus menikah dengan Meilani Manuhutu yang adalah putri Pdt. Ade Manuhutu dan bersama-sama melayani dalam pelayanan pastoral dan pelayanan anak. Pada tanggal <span className="font-semibold text-gray-800">25 Maret 2018</span>, Pdt. Agus ditahbiskan menjadi Gembala Jemaat oleh BPD GBI DKI Jakarta untuk melanjutkan penggembalaan Pdt. Ade Manuhutu.
                 </p>
+
+                {/* Quote */}
+                <blockquote className="border-l-4 border-[#A47151] pl-5 py-2 mt-6">
+                  <p className="text-[#2A3338] font-black text-xl italic">
+                    "NO BIBLE, NO BREAKFAST"
+                  </p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Yang diajarkan oleh Pdt. Ade Manuhutu, bukan lagi sebuah semboyan hidup, tetapi telah menjadi gaya hidup bagi Pdt. Riwu yang dipegangnya hingga saat ini.
+                  </p>
+                </blockquote>
               </div>
             </div>
 
             {/* Foto kanan */}
             <div className="order-1 md:order-2 flex-shrink-0">
-              <div className="w-64 h-80 rounded-2xl bg-gray-100 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-gray-400 overflow-hidden">
-                <svg className="w-16 h-16 mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                <p className="text-xs font-bold uppercase tracking-widest text-gray-300">Foto Gembala</p>
-                <p className="text-xs text-gray-300 mt-1">Segera hadir</p>
+              <div className="w-72 h-96 rounded-2xl overflow-hidden shadow-xl">
+                <img
+                  src="/gembala.png"
+                  alt="Pdt. Riwu Agustinus Huru"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
+              <p className="text-center text-xs text-gray-400 mt-3 font-medium">
+                Pdt. Riwu Agustinus Huru & Ibu Meilani Manuhutu
+              </p>
             </div>
+
           </div>
         </div>
       </div>
