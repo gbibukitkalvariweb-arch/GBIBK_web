@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
-  // GANTI NOMOR DI BAWAH INI SAMA NOMOR WA GEREJA/ADMIN LO BRO
-  // Pastiin depannya pakai 62 (jangan pakai 0 atau +)
-  const waNumber = "6281234567890"; 
+  const waNumber = "6281218990403";
   const waMessage = "Shalom GBI Bukit Kalvari, saya ingin mendapatkan info lebih lanjut mengenai ibadah.";
 
   return (
     <section id="home" className="relative w-full min-h-[90vh] flex items-center overflow-hidden bg-white pt-24 pb-16">
       
-      {/* ========== BACKGROUND GAMBAR & GRADASI PUTIH ========== */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/mandala2.png" 
@@ -19,9 +17,8 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent w-full md:w-[85%]"></div>
       </div>
 
-      {/* ========== KONTEN TEKS ========== */}
+      {/* KONTEN */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 flex">
-        
         <div className="w-full md:w-[60%] lg:w-[50%] flex flex-col items-start text-left">
           
           <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tighter text-[#2A3338] leading-[1.1] mb-6">
@@ -39,7 +36,7 @@ const HeroSection = () => {
             Membawa setiap jiwa pada restorasi total, membangun keluarga yang kuat, dan mempersiapkan Anda bagi kerajaan-Nya.
           </p>
           
-          {/* ========== TOMBOL WHATSAPP ========== */}
+          {/* TOMBOL WHATSAPP */}
           <a 
             href={`https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`}
             target="_blank"
