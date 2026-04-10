@@ -18,8 +18,8 @@ const IbadahPage = () => {
           </p>
         </div>
 
-        {/* Grid Jadwal Ibadah */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {/* Grid Jadwal Ibadah - 2 card saja */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-3xl mx-auto">
           
           {/* Card Ibadah Raya */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow">
@@ -59,25 +59,6 @@ const IbadahPage = () => {
             </div>
           </div>
 
-          {/* Card Youth */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow">
-            <div className={`w-14 h-14 ${accentBg} ${accentColor} rounded-full flex items-center justify-center mb-6`}>
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Ibadah Youth</h3>
-            <p className="text-gray-500 mb-6">Wadah bagi para pemuda dan remaja untuk memuji Tuhan dan bersekutu.</p>
-            <div className="border-t border-gray-100 pt-4">
-              <div className="flex items-center text-gray-700 font-medium mb-2">
-                <svg className="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                Setiap Hari Sabtu
-              </div>
-              <div className="flex items-center text-gray-700 font-medium">
-                <svg className="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                17.00 WIB
-              </div>
-            </div>
-          </div>
-
         </div>
 
         {/* Info Lokasi Section */}
@@ -87,7 +68,6 @@ const IbadahPage = () => {
             <p className="text-gray-600 mb-8 leading-relaxed">
               Kami beribadah di lokasi yang strategis dan mudah dijangkau. Jangan ragu untuk menghubungi kami jika Anda membutuhkan petunjuk arah.
             </p>
-            
             <div className="space-y-4">
               <div className="flex items-start">
                 <svg className={`w-6 h-6 mr-4 mt-1 ${accentColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -97,7 +77,6 @@ const IbadahPage = () => {
                 </div>
               </div>
             </div>
-
             <a
               href="https://maps.google.com/?q=Jl.+Mandala+Utara+No.26+Tomang+Jakarta+Barat"
               target="_blank"
@@ -108,7 +87,6 @@ const IbadahPage = () => {
             </a>
           </div>
           
-          {/* Google Maps Embed */}
           <div className="md:w-1/2 min-h-[350px]">
             <iframe
               title="Lokasi GBI Bukit Kalvari"
