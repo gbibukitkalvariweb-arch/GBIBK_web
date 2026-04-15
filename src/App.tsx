@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/event" element={<EventPage />} />
           <Route path="/persembahan" element={<PersembahanPage />} />
           <Route path="/renungan" element={<RenunganPage />} />
-          <Route path="/renungan/:slug" element={<RenunganDetailPage />} />
+          <Route path="/renungan/:id" element={<RenunganDetailPage />} />
           <Route path="/kategori/:slug" element={<CategoryPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
