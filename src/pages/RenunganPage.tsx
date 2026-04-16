@@ -25,20 +25,20 @@ const RenunganPage = () => {
       sort: ['-tanggal_publish'],
       limit: 9,
     }))
-    .then((data: any) => {
-      if (data.length > 0) {
-        setFeatured(data[0]);
-        setPosts(data.slice(1, 9));
-      } else {
-        setFeatured(null);
-        setPosts([]);
-      }
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.error('Directus Error:', err);
-      setLoading(false);
-    });
+      .then((data: any) => {
+        if (data.length > 0) {
+          setFeatured(data[0]);
+          setPosts(data.slice(1, 9));
+        } else {
+          setFeatured(null);
+          setPosts([]);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Directus Error:', err);
+        setLoading(false);
+      });
   }, [activeCategory]);
 
   const getCategoryLabel = (slug: string) => CATEGORIES.find(c => c.slug === slug)?.label || slug;
