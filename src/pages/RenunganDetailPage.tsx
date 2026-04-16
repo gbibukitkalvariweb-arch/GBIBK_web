@@ -9,13 +9,18 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const RenunganDetailPage = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
+
   const navigate = useNavigate();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || isNaN(Number(id))) {
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
 
@@ -27,13 +32,15 @@ const RenunganDetailPage = () => {
     }))
       .then((res: any) => {
         setPost(res[0] || null);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Directus Error:", err);
         setPost(null);
+      })
+      .finally(() => {
         setLoading(false);
       });
+
   }, [id]);
 
   if (loading) return (
