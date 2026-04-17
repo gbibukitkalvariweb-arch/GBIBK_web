@@ -1,5 +1,11 @@
 export default async function handler(req, res) {
-  const now = new Date().toISOString();
+  // Bikin waktu WIB (UTC + 7 jam) biar cocok sama database Directus
+  const utcTime = new Date().getTime();
+  const wibTime = new Date(utcTime + (7 * 60 * 60 * 1000));
+  
+  // Potong formatnya jadi "YYYY-MM-DDTHH:mm:ss" (hapus Z di belakang)
+  const nowWIB = wibTime.toISOString().slice(0, 19);
+
   const DIRECTUS_URL = process.env.VITE_DIRECTUS_URL;
   const DIRECTUS_TOKEN = process.env.DIRECTUS_ADMIN_TOKEN;
 
@@ -8,8 +14,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. CARI DULU artikelnya (GET)
-    const getReq = await fetch(`${DIRECTUS_URL}/items/artikel?filter[status][_eq]=scheduled&filter[tanggal_publish][_lte]=${now}`, {
+    const getReq = await fetch(`${DIRECTUS_URL}/items/artikel?filter[status][_eq]=scheduled&filter[tanggal_publish][_lte]=${nowWIB}`, {
       method: 'GET',
       headers: { 'Authorization': `Bearer ${DIRECTUS_TOKEN}` }
     });
@@ -22,20 +27,17 @@ export default async function handler(req, res) {
 
     const items = getRes.data || [];
 
-    // Kalau ternyata kosong, kita balikin pesan biar gampang nge-debug jam-nya
     if (items.length === 0) {
       return res.status(200).json({ 
         ok: true, 
         pesan: "Nggak ada artikel scheduled yang waktunya cocok.",
-        waktu_server_sekarang: now,
+        waktu_pencarian_wib: nowWIB,
         updated_items: [] 
       });
     }
 
-    // 2. Kalau ketemu, kumpulin ID artikelnya
     const ids = items.map(item => item.id);
 
-    // 3. UPDATE statusnya berdasarkan ID (PATCH)
     const patchReq = await fetch(`${DIRECTUS_URL}/items/artikel`, {
       method: 'PATCH',
       headers: {
@@ -43,7 +45,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        keys: ids, // Langsung tembak ID-nya
+        keys: ids,
         data: { status: "published" }
       })
     });
