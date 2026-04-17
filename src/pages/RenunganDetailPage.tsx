@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { directus, getImageUrl, readItems } from "@/lib/directus";
+import { directus, getImageUrl, readItem } from "@/lib/directus";
 
 const CATEGORY_LABELS: Record<string, string> = {
   "buletin_rise": "Buletin Rise!",
@@ -9,29 +9,24 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const RenunganDetailPage = () => {
-  const params = useParams();
-  const id = params.id;
-
+  const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id || isNaN(Number(id))) {
+    // Fix 1: Hapus pengecekan isNaN dan biarkan id sebagai string
+    if (!id) {
       setLoading(false);
       return;
     }
 
     setLoading(true);
 
-    directus.request(readItems('artikel', {
-      filter: {
-        id: { _eq: Number(id) }
-      },
-      limit: 1
-    }))
+    // Fix 2: Langsung pakai id, dan tambahkan fields: ['*']
+    directus.request(readItem('artikel', id, { fields: ['*'] }))
       .then((res: any) => {
-        setPost(res[0] || null);
+        setPost(res || null);
       })
       .catch((err) => {
         console.error("Directus Error:", err);

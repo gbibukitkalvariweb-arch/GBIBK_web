@@ -23,7 +23,7 @@ const RenunganPage = () => {
         kategori: { _eq: activeCategory }
       },
       sort: ['-tanggal_publish'],
-      limit: 9,
+      fields: ['*'], limit: 9,
     }))
       .then((data: any) => {
         if (data.length > 0) {
