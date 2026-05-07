@@ -93,7 +93,7 @@ const Footer = () => {
             Ikuti Kami
           </h4>
           <div className="flex gap-4 mb-6">
-            <a href="https://www.instagram.com/gbi_mu26/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-background/10 flex items-center justify-center text-background/60 hover:text-primary hover:bg-primary/10 transition-colors">
+            <a href="https://www.instagram.com/gbi_bukitkalvari/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-background/10 flex items-center justify-center text-background/60 hover:text-primary hover:bg-primary/10 transition-colors">
               <Instagram className="w-5 h-5" />
             </a>
             <a href="https://www.facebook.com/gbi.mandalautara.7" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-background/10 flex items-center justify-center text-background/60 hover:text-primary hover:bg-primary/10 transition-colors">
