@@ -8,7 +8,7 @@ const EventPage = () => {
   useEffect(() => {
     directus.request(readItems('event', {
       filter: { status: { _eq: 'published' } },
-      sort: ['tanggal'],
+      sort: ['-tanggal'], // ← Tanda minus di sini bikin yang terbaru muncul di atas
     }))
     .then((data: any) => {
       setEvents(data);
